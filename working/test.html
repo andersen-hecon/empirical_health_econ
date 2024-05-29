@@ -104,13 +104,6 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="shiny-documents" class="level2">
-<h2 class="anchored" data-anchor-id="shiny-documents">Shiny Documents</h2>
-<p>This Quarto document is made interactive using Shiny. Interactive documents allow readers to modify parameters and see the results immediately. Learn more about Shiny interactive documents at <a href="https://quarto.org/docs/interactive/shiny/" class="uri">https://quarto.org/docs/interactive/shiny/</a>.</p>
-</section>
-<section id="inputs-and-outputs" class="level2">
-<h2 class="anchored" data-anchor-id="inputs-and-outputs">Inputs and Outputs</h2>
-<p>You can embed Shiny inputs and outputs in your document. Outputs are automatically updated whenever inputs change. This demonstrates how a standard R plot can be made interactive:</p>
 <pre class="shinylive-r" data-engine="r"><code>#| standalone: true
 #| viewerHeight: 600
 library(shiny)
@@ -601,7 +594,6 @@ server &lt;- function(input, output) {
 shinyApp(ui = ui, server = server)</code></pre>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -685,7 +677,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp("https:\/\/andersen-hecon\.github\.io\/empirical_health_econ\/");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
