@@ -1,0 +1,7 @@
+project:
+  type: website
+  output-dir: _site
+
+website: 
+  title: "Empirical Health Economics"
+  description: "Website companion to Empirical Health Economics"
