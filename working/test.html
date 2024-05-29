@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Empirical Health Economics - The relationship between health, education, and age</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<meta name="shinylive:serviceworker_dir" content="..">
+<script src="../site_libs/quarto-contrib/shinylive-0.2.3/shinylive/load-shinylive-sw.js" type="module"></script>
+<script src="../site_libs/quarto-contrib/shinylive-0.2.3/shinylive/run-python-blocks.js" type="module"></script>
+<link href="../site_libs/quarto-contrib/shinylive-0.2.3/shinylive/shinylive.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/shinylive-quarto-css/shinylive-quarto.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">The relationship between health, education, and age</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="shiny-documents" class="level2">
+<h2 class="anchored" data-anchor-id="shiny-documents">Shiny Documents</h2>
+<p>This Quarto document is made interactive using Shiny. Interactive documents allow readers to modify parameters and see the results immediately. Learn more about Shiny interactive documents at <a href="https://quarto.org/docs/interactive/shiny/" class="uri">https://quarto.org/docs/interactive/shiny/</a>.</p>
+</section>
+<section id="inputs-and-outputs" class="level2">
+<h2 class="anchored" data-anchor-id="inputs-and-outputs">Inputs and Outputs</h2>
+<p>You can embed Shiny inputs and outputs in your document. Outputs are automatically updated whenever inputs change. This demonstrates how a standard R plot can be made interactive:</p>
+<pre class="shinylive-r" data-engine="r"><code>#| standalone: true
+#| viewerHeight: 600
+library(shiny)
+library(dplyr)
+library(purrr)
+library(jsonify)
+library(ggplot2)
+
+# load the data
+gh_data&lt;-
+  c(
+'{"genhlth":"Excellent","educa":"Less than high school","_ageg5yr":"18-24","n":626906.3535193}',
+'{"genhlth":"Excellent","educa":"Less than high school","_ageg5yr":"25-29","n":348638.83085802}',
+'{"genhlth":"Excellent","educa":"Less than high school","_ageg5yr":"30-34","n":537688.2581685}',
+'{"genhlth":"Excellent","educa":"Less than high school","_ageg5yr":"35-39","n":367855.1790373}',
+'{"genhlth":"Excellent","educa":"Less than high school","_ageg5yr":"40-44","n":329972.454329}',
+'{"genhlth":"Excellent","educa":"Less than high school","_ageg5yr":"45-49","n":242676.8060129}',
+'{"genhlth":"Excellent","educa":"Less than high school","_ageg5yr":"50-54","n":274193.87081149}',
+'{"genhlth":"Excellent","educa":"Less than high school","_ageg5yr":"55-59","n":172212.4085737}',
+'{"genhlth":"Excellent","educa":"Less than high school","_ageg5yr":"60-64","n":142467.8360681}',
+'{"genhlth":"Excellent","educa":"Less than high school","_ageg5yr":"65-69","n":171583.7277149}',
+'{"genhlth":"Excellent","educa":"Less than high school","_ageg5yr":"70-74","n":163284.7422611}',
+'{"genhlth":"Excellent","educa":"Less than high school","_ageg5yr":"75-79","n":126348.4218134}',
+'{"genhlth":"Excellent","educa":"Less than high school","_ageg5yr":"80+","n":103991.5452778}',
+'{"genhlth":"Excellent","educa":"High school or GED","_ageg5yr":"18-24","n":3079626.63852398}',
+'{"genhlth":"Excellent","educa":"High school or GED","_ageg5yr":"25-29","n":1121402.9412469}',
+'{"genhlth":"Excellent","educa":"High school or GED","_ageg5yr":"30-34","n":1047963.02432349}',
+'{"genhlth":"Excellent","educa":"High school or GED","_ageg5yr":"35-39","n":762239.95525573}',
+'{"genhlth":"Excellent","educa":"High school or GED","_ageg5yr":"40-44","n":708478.72322758}',
+'{"genhlth":"Excellent","educa":"High school or GED","_ageg5yr":"45-49","n":603964.09198675}',
+'{"genhlth":"Excellent","educa":"High school or GED","_ageg5yr":"50-54","n":755173.1264039}',
+'{"genhlth":"Excellent","educa":"High school or GED","_ageg5yr":"55-59","n":631777.81787803}',
+'{"genhlth":"Excellent","educa":"High school or GED","_ageg5yr":"60-64","n":573674.65556247}',
+'{"genhlth":"Excellent","educa":"High school or GED","_ageg5yr":"65-69","n":414631.94924336}',
+'{"genhlth":"Excellent","educa":"High school or GED","_ageg5yr":"70-74","n":305765.89503397}',
+'{"genhlth":"Excellent","educa":"High school or GED","_ageg5yr":"75-79","n":297931.97236172}',
+'{"genhlth":"Excellent","educa":"High school or GED","_ageg5yr":"80+","n":318304.31031981}',
+'{"genhlth":"Excellent","educa":"Some college","_ageg5yr":"18-24","n":2753129.03172916}',
+'{"genhlth":"Excellent","educa":"Some college","_ageg5yr":"25-29","n":1441434.3155835}',
+'{"genhlth":"Excellent","educa":"Some college","_ageg5yr":"30-34","n":1457079.12935158}',
+'{"genhlth":"Excellent","educa":"Some college","_ageg5yr":"35-39","n":1010459.23550897}',
+'{"genhlth":"Excellent","educa":"Some college","_ageg5yr":"40-44","n":999345.68641605}',
+'{"genhlth":"Excellent","educa":"Some college","_ageg5yr":"45-49","n":812812.50385928}',
+'{"genhlth":"Excellent","educa":"Some college","_ageg5yr":"50-54","n":979009.66868947}',
+'{"genhlth":"Excellent","educa":"Some college","_ageg5yr":"55-59","n":881744.9432892}',
+'{"genhlth":"Excellent","educa":"Some college","_ageg5yr":"60-64","n":911373.1129638}',
+'{"genhlth":"Excellent","educa":"Some college","_ageg5yr":"65-69","n":634252.82635472}',
+'{"genhlth":"Excellent","educa":"Some college","_ageg5yr":"70-74","n":521159.97022494}',
+'{"genhlth":"Excellent","educa":"Some college","_ageg5yr":"75-79","n":349791.76051669}',
+'{"genhlth":"Excellent","educa":"Some college","_ageg5yr":"80+","n":333872.70131761}',
+'{"genhlth":"Excellent","educa":"College or more","_ageg5yr":"18-24","n":1048586.06444222}',
+'{"genhlth":"Excellent","educa":"College or more","_ageg5yr":"25-29","n":1789510.1380988}',
+'{"genhlth":"Excellent","educa":"College or more","_ageg5yr":"30-34","n":2128594.83867626}',
+'{"genhlth":"Excellent","educa":"College or more","_ageg5yr":"35-39","n":1871998.02800058}',
+'{"genhlth":"Excellent","educa":"College or more","_ageg5yr":"40-44","n":1871269.98046707}',
+'{"genhlth":"Excellent","educa":"College or more","_ageg5yr":"45-49","n":1656680.66739794}',
+'{"genhlth":"Excellent","educa":"College or more","_ageg5yr":"50-54","n":1726134.93427975}',
+'{"genhlth":"Excellent","educa":"College or more","_ageg5yr":"55-59","n":1416078.32365221}',
+'{"genhlth":"Excellent","educa":"College or more","_ageg5yr":"60-64","n":1417363.67247879}',
+'{"genhlth":"Excellent","educa":"College or more","_ageg5yr":"65-69","n":1032483.67363614}',
+'{"genhlth":"Excellent","educa":"College or more","_ageg5yr":"70-74","n":767875.8655606899}',
+'{"genhlth":"Excellent","educa":"College or more","_ageg5yr":"75-79","n":414752.14231902}',
+'{"genhlth":"Excellent","educa":"College or more","_ageg5yr":"80+","n":334511.5085312}',
+'{"genhlth":"Very Good","educa":"Less than high school","_ageg5yr":"18-24","n":930298.0094618}',
+'{"genhlth":"Very Good","educa":"Less than high school","_ageg5yr":"25-29","n":502915.20564495}',
+'{"genhlth":"Very Good","educa":"Less than high school","_ageg5yr":"30-34","n":490449.967884}',
+'{"genhlth":"Very Good","educa":"Less than high school","_ageg5yr":"35-39","n":470285.791895}',
+'{"genhlth":"Very Good","educa":"Less than high school","_ageg5yr":"40-44","n":395876.3353614}',
+'{"genhlth":"Very Good","educa":"Less than high school","_ageg5yr":"45-49","n":252704.61579879}',
+'{"genhlth":"Very Good","educa":"Less than high school","_ageg5yr":"50-54","n":363975.3723036}',
+'{"genhlth":"Very Good","educa":"Less than high school","_ageg5yr":"55-59","n":268018.36449464}',
+'{"genhlth":"Very Good","educa":"Less than high school","_ageg5yr":"60-64","n":283746.65498479999}',
+'{"genhlth":"Very Good","educa":"Less than high school","_ageg5yr":"65-69","n":212862.6424661}',
+'{"genhlth":"Very Good","educa":"Less than high school","_ageg5yr":"70-74","n":310824.7503268}',
+'{"genhlth":"Very Good","educa":"Less than high school","_ageg5yr":"75-79","n":263584.4144909}',
+'{"genhlth":"Very Good","educa":"Less than high school","_ageg5yr":"80+","n":366685.97981447}',
+'{"genhlth":"Very Good","educa":"High school or GED","_ageg5yr":"18-24","n":4387367.51255771}',
+'{"genhlth":"Very Good","educa":"High school or GED","_ageg5yr":"25-29","n":1746594.14028442}',
+'{"genhlth":"Very Good","educa":"High school or GED","_ageg5yr":"30-34","n":1604917.75241856}',
+'{"genhlth":"Very Good","educa":"High school or GED","_ageg5yr":"35-39","n":1192933.55682856}',
+'{"genhlth":"Very Good","educa":"High school or GED","_ageg5yr":"40-44","n":1329997.9624748}',
+'{"genhlth":"Very Good","educa":"High school or GED","_ageg5yr":"45-49","n":1111275.94694452}',
+'{"genhlth":"Very Good","educa":"High school or GED","_ageg5yr":"50-54","n":1493747.15527727}',
+'{"genhlth":"Very Good","educa":"High school or GED","_ageg5yr":"55-59","n":1581448.46603283}',
+'{"genhlth":"Very Good","educa":"High school or GED","_ageg5yr":"60-64","n":1592698.25246926}',
+'{"genhlth":"Very Good","educa":"High school or GED","_ageg5yr":"65-69","n":1111619.79311027}',
+'{"genhlth":"Very Good","educa":"High school or GED","_ageg5yr":"70-74","n":975504.79962113}',
+'{"genhlth":"Very Good","educa":"High school or GED","_ageg5yr":"75-79","n":772256.65969597}',
+'{"genhlth":"Very Good","educa":"High school or GED","_ageg5yr":"80+","n":979785.58440316}',
+'{"genhlth":"Very Good","educa":"Some college","_ageg5yr":"18-24","n":4549223.1334545}',
+'{"genhlth":"Very Good","educa":"Some college","_ageg5yr":"25-29","n":2529250.21308928}',
+'{"genhlth":"Very Good","educa":"Some college","_ageg5yr":"30-34","n":2496367.7020821}',
+'{"genhlth":"Very Good","educa":"Some college","_ageg5yr":"35-39","n":1945936.323397}',
+'{"genhlth":"Very Good","educa":"Some college","_ageg5yr":"40-44","n":1854397.4240635799}',
+'{"genhlth":"Very Good","educa":"Some college","_ageg5yr":"45-49","n":1580404.98871344}',
+'{"genhlth":"Very Good","educa":"Some college","_ageg5yr":"50-54","n":1998147.52573699}',
+'{"genhlth":"Very Good","educa":"Some college","_ageg5yr":"55-59","n":1903805.35717633}',
+'{"genhlth":"Very Good","educa":"Some college","_ageg5yr":"60-64","n":2217329.40472535}',
+'{"genhlth":"Very Good","educa":"Some college","_ageg5yr":"65-69","n":1752934.57793762}',
+'{"genhlth":"Very Good","educa":"Some college","_ageg5yr":"70-74","n":1474592.8920833}',
+'{"genhlth":"Very Good","educa":"Some college","_ageg5yr":"75-79","n":920641.32267454}',
+'{"genhlth":"Very Good","educa":"Some college","_ageg5yr":"80+","n":971457.86814491}',
+'{"genhlth":"Very Good","educa":"College or more","_ageg5yr":"18-24","n":1556700.62979756}',
+'{"genhlth":"Very Good","educa":"College or more","_ageg5yr":"25-29","n":2739540.47199855}',
+'{"genhlth":"Very Good","educa":"College or more","_ageg5yr":"30-34","n":3238533.28840351}',
+'{"genhlth":"Very Good","educa":"College or more","_ageg5yr":"35-39","n":2771499.13551398}',
+'{"genhlth":"Very Good","educa":"College or more","_ageg5yr":"40-44","n":2951603.5735133}',
+'{"genhlth":"Very Good","educa":"College or more","_ageg5yr":"45-49","n":2535704.76761866}',
+'{"genhlth":"Very Good","educa":"College or more","_ageg5yr":"50-54","n":2603296.98099695}',
+'{"genhlth":"Very Good","educa":"College or more","_ageg5yr":"55-59","n":2230943.20461492}',
+'{"genhlth":"Very Good","educa":"College or more","_ageg5yr":"60-64","n":2334483.56223225}',
+'{"genhlth":"Very Good","educa":"College or more","_ageg5yr":"65-69","n":2000853.98639953}',
+'{"genhlth":"Very Good","educa":"College or more","_ageg5yr":"70-74","n":1583803.33153906}',
+'{"genhlth":"Very Good","educa":"College or more","_ageg5yr":"75-79","n":848738.80686892}',
+'{"genhlth":"Very Good","educa":"College or more","_ageg5yr":"80+","n":755918.08734202}',
+'{"genhlth":"Good","educa":"Less than high school","_ageg5yr":"18-24","n":1181527.0679576}',
+'{"genhlth":"Good","educa":"Less than high school","_ageg5yr":"25-29","n":760355.13638796}',
+'{"genhlth":"Good","educa":"Less than high school","_ageg5yr":"30-34","n":1359250.0192018}',
+'{"genhlth":"Good","educa":"Less than high school","_ageg5yr":"35-39","n":1302883.26969384}',
+'{"genhlth":"Good","educa":"Less than high school","_ageg5yr":"40-44","n":1121996.9544672}',
+'{"genhlth":"Good","educa":"Less than high school","_ageg5yr":"45-49","n":902917.70581637}',
+'{"genhlth":"Good","educa":"Less than high school","_ageg5yr":"50-54","n":947281.6833575}',
+'{"genhlth":"Good","educa":"Less than high school","_ageg5yr":"55-59","n":813377.04298947}',
+'{"genhlth":"Good","educa":"Less than high school","_ageg5yr":"60-64","n":722367.89117474}',
+'{"genhlth":"Good","educa":"Less than high school","_ageg5yr":"65-69","n":579743.56326337}',
+'{"genhlth":"Good","educa":"Less than high school","_ageg5yr":"70-74","n":600110.8142831}',
+'{"genhlth":"Good","educa":"Less than high school","_ageg5yr":"75-79","n":538783.16714711}',
+'{"genhlth":"Good","educa":"Less than high school","_ageg5yr":"80+","n":664962.67114779}',
+'{"genhlth":"Good","educa":"High school or GED","_ageg5yr":"18-24","n":3989362.68852926}',
+'{"genhlth":"Good","educa":"High school or GED","_ageg5yr":"25-29","n":2005053.97407794}',
+'{"genhlth":"Good","educa":"High school or GED","_ageg5yr":"30-34","n":2312935.15752129}',
+'{"genhlth":"Good","educa":"High school or GED","_ageg5yr":"35-39","n":1657485.73126413}',
+'{"genhlth":"Good","educa":"High school or GED","_ageg5yr":"40-44","n":1740832.5207279}',
+'{"genhlth":"Good","educa":"High school or GED","_ageg5yr":"45-49","n":1687127.1229375902}',
+'{"genhlth":"Good","educa":"High school or GED","_ageg5yr":"50-54","n":2074779.6684426}',
+'{"genhlth":"Good","educa":"High school or GED","_ageg5yr":"55-59","n":1981121.18111777}',
+'{"genhlth":"Good","educa":"High school or GED","_ageg5yr":"60-64","n":2018544.19216475}',
+'{"genhlth":"Good","educa":"High school or GED","_ageg5yr":"65-69","n":1658327.93942317}',
+'{"genhlth":"Good","educa":"High school or GED","_ageg5yr":"70-74","n":1429640.17823642}',
+'{"genhlth":"Good","educa":"High school or GED","_ageg5yr":"75-79","n":1137583.759508}',
+'{"genhlth":"Good","educa":"High school or GED","_ageg5yr":"80+","n":1472543.49960103}',
+'{"genhlth":"Good","educa":"Some college","_ageg5yr":"18-24","n":3493647.67252148}',
+'{"genhlth":"Good","educa":"Some college","_ageg5yr":"25-29","n":2027610.73399509}',
+'{"genhlth":"Good","educa":"Some college","_ageg5yr":"30-34","n":2130832.09153504}',
+'{"genhlth":"Good","educa":"Some college","_ageg5yr":"35-39","n":2067210.73921216}',
+'{"genhlth":"Good","educa":"Some college","_ageg5yr":"40-44","n":2161620.26197723}',
+'{"genhlth":"Good","educa":"Some college","_ageg5yr":"45-49","n":1754701.12118264}',
+'{"genhlth":"Good","educa":"Some college","_ageg5yr":"50-54","n":2178436.66620753}',
+'{"genhlth":"Good","educa":"Some college","_ageg5yr":"55-59","n":2023879.85603969}',
+'{"genhlth":"Good","educa":"Some college","_ageg5yr":"60-64","n":2376192.1560004}',
+'{"genhlth":"Good","educa":"Some college","_ageg5yr":"65-69","n":1775315.41838597}',
+'{"genhlth":"Good","educa":"Some college","_ageg5yr":"70-74","n":1588317.28214028}',
+'{"genhlth":"Good","educa":"Some college","_ageg5yr":"75-79","n":1002474.59143352}',
+'{"genhlth":"Good","educa":"Some college","_ageg5yr":"80+","n":1154864.66224168}',
+'{"genhlth":"Good","educa":"College or more","_ageg5yr":"18-24","n":908399.8474899}',
+'{"genhlth":"Good","educa":"College or more","_ageg5yr":"25-29","n":1614053.12244012}',
+'{"genhlth":"Good","educa":"College or more","_ageg5yr":"30-34","n":2030138.57927513}',
+'{"genhlth":"Good","educa":"College or more","_ageg5yr":"35-39","n":1827365.58555993}',
+'{"genhlth":"Good","educa":"College or more","_ageg5yr":"40-44","n":1857052.40861793}',
+'{"genhlth":"Good","educa":"College or more","_ageg5yr":"45-49","n":1603046.86746943}',
+'{"genhlth":"Good","educa":"College or more","_ageg5yr":"50-54","n":1690853.52414734}',
+'{"genhlth":"Good","educa":"College or more","_ageg5yr":"55-59","n":1548506.17780212}',
+'{"genhlth":"Good","educa":"College or more","_ageg5yr":"60-64","n":1678175.755737}',
+'{"genhlth":"Good","educa":"College or more","_ageg5yr":"65-69","n":1380481.39130916}',
+'{"genhlth":"Good","educa":"College or more","_ageg5yr":"70-74","n":1190491.91962677}',
+'{"genhlth":"Good","educa":"College or more","_ageg5yr":"75-79","n":727867.68740742}',
+'{"genhlth":"Good","educa":"College or more","_ageg5yr":"80+","n":840283.98363743}',
+'{"genhlth":"Fair","educa":"Less than high school","_ageg5yr":"18-24","n":525878.7038542}',
+'{"genhlth":"Fair","educa":"Less than high school","_ageg5yr":"25-29","n":411795.9054954}',
+'{"genhlth":"Fair","educa":"Less than high school","_ageg5yr":"30-34","n":600666.2911299}',
+'{"genhlth":"Fair","educa":"Less than high school","_ageg5yr":"35-39","n":750838.314772}',
+'{"genhlth":"Fair","educa":"Less than high school","_ageg5yr":"40-44","n":739759.8788861}',
+'{"genhlth":"Fair","educa":"Less than high school","_ageg5yr":"45-49","n":692933.16802812}',
+'{"genhlth":"Fair","educa":"Less than high school","_ageg5yr":"50-54","n":1083146.2432315}',
+'{"genhlth":"Fair","educa":"Less than high school","_ageg5yr":"55-59","n":995897.40808349}',
+'{"genhlth":"Fair","educa":"Less than high school","_ageg5yr":"60-64","n":901717.93788684}',
+'{"genhlth":"Fair","educa":"Less than high school","_ageg5yr":"65-69","n":783014.48241042}',
+'{"genhlth":"Fair","educa":"Less than high school","_ageg5yr":"70-74","n":652108.07876294}',
+'{"genhlth":"Fair","educa":"Less than high school","_ageg5yr":"75-79","n":521628.92145567}',
+'{"genhlth":"Fair","educa":"Less than high school","_ageg5yr":"80+","n":654260.78757112}',
+'{"genhlth":"Fair","educa":"High school or GED","_ageg5yr":"18-24","n":1234540.8027994}',
+'{"genhlth":"Fair","educa":"High school or GED","_ageg5yr":"25-29","n":652228.43805534}',
+'{"genhlth":"Fair","educa":"High school or GED","_ageg5yr":"30-34","n":701934.245514}',
+'{"genhlth":"Fair","educa":"High school or GED","_ageg5yr":"35-39","n":697404.10907533}',
+'{"genhlth":"Fair","educa":"High school or GED","_ageg5yr":"40-44","n":777370.61444182}',
+'{"genhlth":"Fair","educa":"High school or GED","_ageg5yr":"45-49","n":644567.24340157}',
+'{"genhlth":"Fair","educa":"High school or GED","_ageg5yr":"50-54","n":1076595.68323912}',
+'{"genhlth":"Fair","educa":"High school or GED","_ageg5yr":"55-59","n":1076824.0626168}',
+'{"genhlth":"Fair","educa":"High school or GED","_ageg5yr":"60-64","n":1243701.44416847}',
+'{"genhlth":"Fair","educa":"High school or GED","_ageg5yr":"65-69","n":943065.82636818}',
+'{"genhlth":"Fair","educa":"High school or GED","_ageg5yr":"70-74","n":715507.26230933}',
+'{"genhlth":"Fair","educa":"High school or GED","_ageg5yr":"75-79","n":596046.45345764}',
+'{"genhlth":"Fair","educa":"High school or GED","_ageg5yr":"80+","n":775384.47402485}',
+'{"genhlth":"Fair","educa":"Some college","_ageg5yr":"18-24","n":888840.4012455}',
+'{"genhlth":"Fair","educa":"Some college","_ageg5yr":"25-29","n":589551.31593202}',
+'{"genhlth":"Fair","educa":"Some college","_ageg5yr":"30-34","n":760035.19659}',
+'{"genhlth":"Fair","educa":"Some college","_ageg5yr":"35-39","n":617897.95561003}',
+'{"genhlth":"Fair","educa":"Some college","_ageg5yr":"40-44","n":751999.0893266799}',
+'{"genhlth":"Fair","educa":"Some college","_ageg5yr":"45-49","n":647088.14792461}',
+'{"genhlth":"Fair","educa":"Some college","_ageg5yr":"50-54","n":884025.53847017}',
+'{"genhlth":"Fair","educa":"Some college","_ageg5yr":"55-59","n":977737.39343659}',
+'{"genhlth":"Fair","educa":"Some college","_ageg5yr":"60-64","n":1025534.44793235}',
+'{"genhlth":"Fair","educa":"Some college","_ageg5yr":"65-69","n":888752.7919364}',
+'{"genhlth":"Fair","educa":"Some college","_ageg5yr":"70-74","n":730307.18936881}',
+'{"genhlth":"Fair","educa":"Some college","_ageg5yr":"75-79","n":444461.37930707}',
+'{"genhlth":"Fair","educa":"Some college","_ageg5yr":"80+","n":530544.76270962}',
+'{"genhlth":"Fair","educa":"College or more","_ageg5yr":"18-24","n":162930.96017673}',
+'{"genhlth":"Fair","educa":"College or more","_ageg5yr":"25-29","n":289391.43723152}',
+'{"genhlth":"Fair","educa":"College or more","_ageg5yr":"30-34","n":344818.8091467}',
+'{"genhlth":"Fair","educa":"College or more","_ageg5yr":"35-39","n":276627.32271522}',
+'{"genhlth":"Fair","educa":"College or more","_ageg5yr":"40-44","n":404751.62369488}',
+'{"genhlth":"Fair","educa":"College or more","_ageg5yr":"45-49","n":364221.59599932}',
+'{"genhlth":"Fair","educa":"College or more","_ageg5yr":"50-54","n":454909.18642575}',
+'{"genhlth":"Fair","educa":"College or more","_ageg5yr":"55-59","n":445544.96937582}',
+'{"genhlth":"Fair","educa":"College or more","_ageg5yr":"60-64","n":520738.78924393}',
+'{"genhlth":"Fair","educa":"College or more","_ageg5yr":"65-69","n":437120.61376733}',
+'{"genhlth":"Fair","educa":"College or more","_ageg5yr":"70-74","n":405200.40023127}',
+'{"genhlth":"Fair","educa":"College or more","_ageg5yr":"75-79","n":290473.98726059}',
+'{"genhlth":"Fair","educa":"College or more","_ageg5yr":"80+","n":300766.00659284}',
+'{"genhlth":"Poor","educa":"Less than high school","_ageg5yr":"18-24","n":90224.2228515}',
+'{"genhlth":"Poor","educa":"Less than high school","_ageg5yr":"25-29","n":82367.8434709}',
+'{"genhlth":"Poor","educa":"Less than high school","_ageg5yr":"30-34","n":162556.4106895}',
+'{"genhlth":"Poor","educa":"Less than high school","_ageg5yr":"35-39","n":135233.1325551}',
+'{"genhlth":"Poor","educa":"Less than high school","_ageg5yr":"40-44","n":161860.0523023}',
+'{"genhlth":"Poor","educa":"Less than high school","_ageg5yr":"45-49","n":276511.6524191}',
+'{"genhlth":"Poor","educa":"Less than high school","_ageg5yr":"50-54","n":530442.49244954}',
+'{"genhlth":"Poor","educa":"Less than high school","_ageg5yr":"55-59","n":501365.27033413}',
+'{"genhlth":"Poor","educa":"Less than high school","_ageg5yr":"60-64","n":618112.08733188}',
+'{"genhlth":"Poor","educa":"Less than high school","_ageg5yr":"65-69","n":375980.3129007}',
+'{"genhlth":"Poor","educa":"Less than high school","_ageg5yr":"70-74","n":344707.49418914}',
+'{"genhlth":"Poor","educa":"Less than high school","_ageg5yr":"75-79","n":276217.4185251}',
+'{"genhlth":"Poor","educa":"Less than high school","_ageg5yr":"80+","n":381447.52372037}',
+'{"genhlth":"Poor","educa":"High school or GED","_ageg5yr":"18-24","n":192864.8193576}',
+'{"genhlth":"Poor","educa":"High school or GED","_ageg5yr":"25-29","n":119158.2644822}',
+'{"genhlth":"Poor","educa":"High school or GED","_ageg5yr":"30-34","n":159626.6958844}',
+'{"genhlth":"Poor","educa":"High school or GED","_ageg5yr":"35-39","n":151706.671782}',
+'{"genhlth":"Poor","educa":"High school or GED","_ageg5yr":"40-44","n":245482.05746345}',
+'{"genhlth":"Poor","educa":"High school or GED","_ageg5yr":"45-49","n":225192.41165644}',
+'{"genhlth":"Poor","educa":"High school or GED","_ageg5yr":"50-54","n":418334.15251834}',
+'{"genhlth":"Poor","educa":"High school or GED","_ageg5yr":"55-59","n":525611.50355199}',
+'{"genhlth":"Poor","educa":"High school or GED","_ageg5yr":"60-64","n":562646.57928074}',
+'{"genhlth":"Poor","educa":"High school or GED","_ageg5yr":"65-69","n":310682.71724379}',
+'{"genhlth":"Poor","educa":"High school or GED","_ageg5yr":"70-74","n":299558.6247177}',
+'{"genhlth":"Poor","educa":"High school or GED","_ageg5yr":"75-79","n":218891.4368703}',
+'{"genhlth":"Poor","educa":"High school or GED","_ageg5yr":"80+","n":357842.71854573}',
+'{"genhlth":"Poor","educa":"Some college","_ageg5yr":"18-24","n":108749.6748313}',
+'{"genhlth":"Poor","educa":"Some college","_ageg5yr":"25-29","n":98793.8973027}',
+'{"genhlth":"Poor","educa":"Some college","_ageg5yr":"30-34","n":151741.6524254}',
+'{"genhlth":"Poor","educa":"Some college","_ageg5yr":"35-39","n":167246.74131519}',
+'{"genhlth":"Poor","educa":"Some college","_ageg5yr":"40-44","n":212028.68503057}',
+'{"genhlth":"Poor","educa":"Some college","_ageg5yr":"45-49","n":219647.9582759}',
+'{"genhlth":"Poor","educa":"Some college","_ageg5yr":"50-54","n":342765.31293298}',
+'{"genhlth":"Poor","educa":"Some college","_ageg5yr":"55-59","n":373317.81332176}',
+'{"genhlth":"Poor","educa":"Some college","_ageg5yr":"60-64","n":487694.70908137}',
+'{"genhlth":"Poor","educa":"Some college","_ageg5yr":"65-69","n":306720.69650009}',
+'{"genhlth":"Poor","educa":"Some college","_ageg5yr":"70-74","n":255509.76236244}',
+'{"genhlth":"Poor","educa":"Some college","_ageg5yr":"75-79","n":215144.10772919}',
+'{"genhlth":"Poor","educa":"Some college","_ageg5yr":"80+","n":264465.60449186}',
+'{"genhlth":"Poor","educa":"College or more","_ageg5yr":"18-24","n":26154.254743}',
+'{"genhlth":"Poor","educa":"College or more","_ageg5yr":"25-29","n":37326.44403317}',
+'{"genhlth":"Poor","educa":"College or more","_ageg5yr":"30-34","n":43273.900012}',
+'{"genhlth":"Poor","educa":"College or more","_ageg5yr":"35-39","n":63914.2253011}',
+'{"genhlth":"Poor","educa":"College or more","_ageg5yr":"40-44","n":76770.02992414}',
+'{"genhlth":"Poor","educa":"College or more","_ageg5yr":"45-49","n":96056.92212297}',
+'{"genhlth":"Poor","educa":"College or more","_ageg5yr":"50-54","n":119121.56729014}',
+'{"genhlth":"Poor","educa":"College or more","_ageg5yr":"55-59","n":113478.07119377}',
+'{"genhlth":"Poor","educa":"College or more","_ageg5yr":"60-64","n":164763.23280872}',
+'{"genhlth":"Poor","educa":"College or more","_ageg5yr":"65-69","n":132460.91961925}',
+'{"genhlth":"Poor","educa":"College or more","_ageg5yr":"70-74","n":116313.84747983}',
+'{"genhlth":"Poor","educa":"College or more","_ageg5yr":"75-79","n":77226.30124086}',
+'{"genhlth":"Poor","educa":"College or more","_ageg5yr":"80+","n":116564.26341892}'
+)
+  
+gh_levels&lt;-c("Excellent",
+             "Very Good",
+             "Good",
+             "Fair",
+             "Poor")
+
+
+educa_levels=c(
+  "Kindgarten or less",
+  "Grades 1-8",
+  "Grades 9-11",
+  "Less than high school",
+  "High school or GED",
+  "Some college",
+  "College or more"
+)
+
+age5yr=c(
+  "18-24",
+  "25-29",
+  "30-34",
+  "35-39",
+  "40-44",
+  "45-49",
+  "50-54",
+  "55-59",
+  "60-64",
+  "65-69",
+  "70-74",
+  "75-79",
+  "80+")
+
+gh_data&lt;-
+  gh_data|&gt;map_dfr(~jsonify::from_json(.)|&gt;as_tibble())|&gt;
+  mutate(genhealth_num=map_dbl(genhlth,~which(.==gh_levels)))
+
+
+# Define UI for app that draws a histogram ----
+ui &lt;- fluidPage(
+  titlePanel("Self-rated health by age and education"),
+  # Sidebar layout with input and output definitions ----
+  sidebarLayout(
+    
+    # Sidebar panel for inputs ----
+    sidebarPanel(
+      
+      # Input: check boxes for the education levels to include
+      checkboxGroupInput(
+        "educa",
+        "Education levels",
+        c(
+          # "Kindgarten or less",
+          # "Grades 1-8",
+          # "Grades 9-11",
+          "Less than high school",
+          "High school or GED",
+          "Some college",
+          "College or more" 
+        )
+      ),
+      radioButtons(
+        "health_cut",
+        "Cutoff for health",
+        choices=gh_levels
+      )
+      
+    ),
+    
+    # Main panel for displaying outputs ----
+    mainPanel(
+      # 
+      # # Output: Histogram ----
+      # ,
+      textOutput("selected_vars"),
+     
+      tabsetPanel(
+                 tabPanel("Distribution of health",plotOutput(outputId = "distPlot")),
+                 tabPanel("Mean health by age",plotOutput(outputId = "meanPlot")),
+                 tabPanel("Mean health by age and education",plotOutput(outputId = "mean_by_EdPlot")),
+                 tabPanel("Table",tableOutput(outputId = "table"))
+      )
+      
+      
+       
+    )
+  )
+)
+
+# Define server logic required to draw a histogram ----
+server &lt;- function(input, output) {
+  
+  # This expression that generates a histogram is wrapped in a call
+  # to renderPlot to indicate that:
+  #
+  # 1. It is "reactive" and therefore should be automatically
+  #    re-executed when inputs (input$bins) change
+  # 2. Its output type is a plot
+  output$distPlot &lt;- renderPlot({
+    
+    d&lt;-gh_data
+    
+    if(paste(input$educa,collapse=", ") != "") {
+      d&lt;-
+        d|&gt;filter(educa %in% input$educa)
+    }
+    
+    d&lt;-
+      d|&gt;
+      summarize(n=sum(n),.by=c(genhlth,`_ageg5yr`))|&gt;
+      mutate(p=prop.table(n),.by=`_ageg5yr`)
+    
+    ggplot(d,
+           aes(x=`_ageg5yr`,y=p,
+               fill=factor(genhlth,levels=gh_levels)
+           )
+           )+
+      geom_col()+
+      guides(fill=guide_legend(title=element_blank(),position = "bottom"))+
+      xlab("Age")+ylab("Proportion")+
+      scale_y_continuous(limits=c(0,NA))
+    
+  })
+  
+  output$meanPlot &lt;- renderPlot({
+    
+    d&lt;-gh_data
+    
+    if(paste(input$educa,collapse=", ") != "") {
+      d&lt;-
+        d|&gt;filter(educa %in% input$educa)
+    }
+    
+    d&lt;-
+      d|&gt;
+      mutate(
+        g=genhealth_num&lt;=
+          which(input$health_cut==gh_levels)
+      )|&gt;
+      summarize(n=sum(n),.by=c(g,`_ageg5yr`))|&gt;
+      mutate(p=prop.table(n),.by=`_ageg5yr`)|&gt;
+      filter(g)
+
+    ggplot(d,
+           aes(x=factor(`_ageg5yr`,levels=age5yr),y=p, group=g
+               )
+           )+
+      geom_point()+
+      geom_line()+
+      xlab("Age")+ylab("Proportion")+
+      scale_y_continuous(limits=c(0,NA))
+    
+  })
+  
+  output$mean_by_EdPlot &lt;- renderPlot({
+    
+    d&lt;-gh_data
+    
+    if(paste(input$educa,collapse=", ") != "") {
+      d&lt;-
+        d|&gt;filter(educa %in% input$educa)
+    }
+    
+    d&lt;-
+      d|&gt;
+      mutate(
+        g=genhealth_num&lt;=
+          which(input$health_cut==gh_levels)
+      )|&gt;
+      summarize(n=sum(n),.by=c(g,`_ageg5yr`,educa))|&gt;
+      mutate(p=prop.table(n),.by=`_ageg5yr`,educa)|&gt;
+      filter(g)
+
+    ggplot(d,
+           aes(x=factor(`_ageg5yr`,levels=age5yr),y=p, color=factor(educa,levels=educa_levels), group=factor(educa,levels=educa_levels)
+               )
+           )+
+      geom_point()+
+      geom_line()+
+      guides(color=guide_legend(title=element_blank(),position = "bottom"))+
+      xlab("Age")+ylab("Proportion")+
+      scale_y_continuous(limits=c(0,NA))
+    
+  })
+  
+  output$table=renderTable({
+    d&lt;-gh_data
+    
+    if(paste(input$educa,collapse=", ") != "") {
+      d&lt;-
+        d|&gt;filter(educa %in% input$educa)
+    }
+    
+    d&lt;-
+      d|&gt;
+      summarize(n=sum(n),.by=c(genhlth,`_ageg5yr`))|&gt;
+      mutate(p=prop.table(n),.by=`_ageg5yr`)|&gt;
+      select(name=genhlth,`_ageg5yr`,value=p)|&gt;
+      tidyr::pivot_wider()|&gt;
+      select(
+        Age=`_ageg5yr`,
+        any_of(gh_levels)
+      )
+    
+    return(d)
+      
+  }
+  )
+  
+  output$selected_vars&lt;-renderText((
+    paste(input$educa,collapse=", ")
+  ))
+}
+
+# Create Shiny app ----
+shinyApp(ui = ui, server = server)</code></pre>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
