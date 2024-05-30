@@ -31,3 +31,16 @@ chr_data|>
     # measure=str_replace(measure,"(AIAN)","(American Indian & Alaska Native)"),
   )|>
   write_csv("Datasets/chr_county_metrics_2024.csv")
+
+
+counties <- tigris::counties(cb=T,year=2021)|>
+  filter(STATEFP<=56)|>
+  tigris::shift_geometry()|>
+  select(county_fips=GEOID)
+
+counties2<-
+  counties|>
+  rmapshaper::ms_simplify(keep_shapes = T,keep = 0.01)
+
+counties2|>
+  sf::write_sf("Datasets/simply_counties.shp")

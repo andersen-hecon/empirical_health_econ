@@ -1,0 +1,224 @@
+---
+title: "Untitled"
+format: html
+---
+
+
+![Image 1](https://uncg.instructure.com/courses/117523/files/12885556/preview)
+
+![Image 2](https://uncg.instructure.com/courses/117523/files/12885522/preview)
+
+## What is Health Economics?
+
+AJ Culyer and Joe Newhouse wrote, in their Introduction to volume 1 of the Handbook of Health Economics that:
+
+> Health economics is commonly regarded as an applied field of economics. "It draws its theoretical inspiration principally from four traditional areas of economics: finance and insurance, industrial organisation, labour and public finance. Some of the most useful work employs only elementary economic concepts but requires detailed knowledge of health technology and institutions. Policy-oriented research plays a major role and many important policy-relevant articles are published in journals read by physicians and other with direct involvement in health" [Fuchs (1987)]. It might also be reasonably claimed, and has been by Blaug (1998), that health economics has contributed more than merely the application of the standard economic and econometric toolkits of economics.
+
+Broadly speaking, one may divide the field of health economics into factors affecting the demand for health or, as we shall see, for health care and those that affect the supply of health or health care. This is, admittedly, a simplified view and ignores many important aspects of health economics including assessments of the value of health and life, which are of the utmost importance when conducting microeconomic appraisals. At the same time, by dividing the field in this way, we can use traditional tools of microeconomic theory to develop new insights into the determinants of health.
+
+In this course, **we'll focus on factors that affect healthcare utilization and healthcare spending**, which means that we will not be covering large swaths of the health economics literature, including health behaviors, inequality in health and healthcare, and characteristics of the “supply side” of the healthcare market (doctors, hospitals, nurses, etc.).
+
+Health economists work in a variety of areas including at insurance companies, hospitals, pharmaceutical companies, federal, state, and local governments, academia, foundations, think tanks, and consulting firms.  
+
+## Some stylized facts from health economics
+
+One of the universal challenges that everyone faces, and is the foundation of many (if not all) principles of microeconomics courses is that people have to make decisions about what to prioritize because they have unlimited wants, but limited means. The demand for health represents one of the most important unlimited wants, not just because we want to be alive and in "good" health, but also because without health we can't enjoy anything else. We can see this challenge in things like trends in healthcare spending in the United States (and globally).
+
+![Health Expenditure and Financing Per Capita](https://ourworldindata.org/grapher/health-expenditure-and-financing-per-capita)
+
+This "American exceptionalism" in healthcare spending is a common finding across data sources on healthcare expenditures. Unfortunately, as the next widget demonstrates, the higher level of healthcare spending per capita does not translate into better health outcomes.
+
+![Life Expectancy at Birth OECD](https://ourworldindata.org/grapher/life-expectancy-at-birth-oecd)
+
+One of the topics that many health economists study is the degree to which health expenditures actually promote better health outcomes. As we will discuss later in the semester, healthcare spending may, counterintuitively, be a marker of things having gone wrong since healthcare spending measures only one of many ways to invest in one's health.
+
+## What Makes This Course Empirical?
+
+In the past few decades, there has been a dramatic increase in the amount of data available for study, especially in health and healthcare. However, understanding these data can sometimes require specialized tools or skills. The goal of this course is to develop some of these tools and skills, and show you how to learn new skills or use new tools, as the need arises.
+
+Using these skills and tools, you'll be able to estimate models of healthcare utilization to answer questions like:
+
+1. How does healthcare utilization change when prices change?
+2. What personal characteristics are associated with differences in healthcare utilization/spending?
+3. How is health insurance associated with healthcare utilization and healthcare spending?
+
+## The Role of Theory
+
+Despite the fact that this is an **empirical** health economics course, we'll also be developing several important theoretical ideas that will help us interpret our findings. The three key ideas that we develop are:
+
+1. The demand for health and the health capital model.
+2. The theory of adverse selection.
+3. The theory of moral hazard.
+
+The demand for health will help us as we think about which variables to include in our empirical models and how to interpret those variables. Adverse selection and moral hazard will help us when we interpret the relationship between health insurance and healthcare utilization.
+
+## What This Course is **Not**
+
+This course is not a course in econometrics or applied econometrics. We'll be using
+
+
+## Observable JS
+
+This Quarto document is made interactive using Observable JS. Interactive documents allow readers to modify parameters and see the results immediately. Learn more about OJS interactive documents at <https://quarto.org/docs/interactive/ojs/>.
+
+## Bubble Chart
+
+This example uses a D3 bubble chart imported from Observable HQ to analyze commits to GitHub repositories.
+
+Select a repository to analyze the commits of:
+
+```{r}
+library(plotly)
+library(dplyr)
+
+# Assuming you have life expectancy data as a CSV file
+data <- read.csv("C:/Users/msander4/Downloads/life-expectancy.csv")
+```
+
+
+```{r}
+# fig <- plot_ly(
+#   type = 'scatter',
+#   x = data$Year,
+#   y = data$Period.life.expectancy.at.birth...Sex..all...Age..0,
+#   hoverinfo = 'text',
+#   mode = 'markers',
+#   transforms = list(
+#     list(
+#       type = 'filter',
+#       target = 'y',
+#       operation = '>',
+#       value = mean(mtcars$qsec)
+#     )
+#   )
+# )
+# 
+# fig
+# 
+# g <- ggplot(sd, aes(year, lifeExp, color = country, group = country)) +
+#   geom_line()
+# 
+# bscols(widths = c(12, 12),
+#   filter_select("country", "Country:", sd, ~ country),
+#   ggplotly(g)
+# )
+# 
+# 
+# p <- data %>%
+#   filter(Entity == input$countrySelect) %>%
+#   plot_ly(x = ~Year, y = ~Period.life.expectancy.at.birth...Sex..all...Age..0, type = 'scatter', mode = 'lines+markers', text = ~Entity) %>%
+#   layout(title = "Life Expectancy Over Time")
+# 
+# p
+
+
+
+
+fig<-
+  plot_ly(data=filter(data,Year>1990,Code=="USA"),
+          x=~Year,
+          y=~Period.life.expectancy.at.birth...Sex..all...Age..0,
+          type="scatter",
+          mode="lines"
+        )
+
+
+
+
+fig
+```
+
+```{r}
+# Creating a dropdown menu
+# selectInput("countrySelect", "Select Country", choices = unique(data$Country), selected = unique(data$Country)[1])
+```
+
+
+```{r}
+
+library(plotly)
+library(dplyr)
+
+# Generate a plot with a trace for each country
+p <- data %>%
+  group_by(Entity) %>%
+  summarise() %>%
+  plot_ly()
+
+# Add traces for each country
+for (country in unique(data$Entity)) {
+  p <- p %>%
+    add_trace(
+      data = filter(data, Entity == country),
+      x = ~Year,
+      y = ~Period.life.expectancy.at.birth...Sex..all...Age..0,
+      name = country,
+      type = 'scatter',
+      mode = 'lines+markers'
+    )
+}
+
+# Configure the layout
+p <- p %>%
+  layout(
+    title = "Life Expectancy Over Time by Country",
+    xaxis = list(title = "Year"),
+    yaxis = list(title = "Life Expectancy (years)"),
+    legend = list(x = 0.1, y = 1.1, orientation = 'h')
+  )
+
+# Render the plot
+p
+
+
+```
+
+
+
+
+
+```{ojs}
+//| echo: false
+//| panel: input
+viewof repo = Inputs.radio(
+  [
+    "pandas-dev/pandas",
+    "tidyverse/ggplot2",
+  ], 
+  { label: "Repository:", value: "pandas-dev/pandas"}
+)
+```
+
+Fetch the commits for the specified `repo` using the GitHub API:
+
+```{ojs}
+d3 = require('d3')
+contributors = await d3.json(
+  "https://api.github.com/repos/" + repo + "/stats/contributors"
+)
+commits = contributors.map(contributor => {
+  const author = contributor.author;
+  return {
+    name: author.login,
+    title: author.login,
+    group: author.type,
+    value: contributor.total
+  }
+})
+```
+
+Note that the `repo` variable is bound dynamically from the radio input defined above. If you change the input the contributors query will be automatically re-executed.
+
+View the commits sorted by most to least:
+
+```{ojs}
+Inputs.table(commits, { sort: "value", reverse: true })
+```
+
+Visualize using a D3 bubble chart imported from Observable HQ:
+
+```{ojs}
+import { chart } with { commits as data } 
+  from "@d3/d3-bubble-chart"
+chart
+```

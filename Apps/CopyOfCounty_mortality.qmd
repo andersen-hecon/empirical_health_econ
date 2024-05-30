@@ -1,0 +1,184 @@
+---
+title: "County mortality"
+format:
+  html:
+    grid: 
+      body-width: 1300px
+    resources: 
+      - shinylive-sw.js
+filters:
+  - shinylive
+---
+
+```{shinylive-r}
+#| standalone: true
+#| viewerHeight: 600
+library(shiny)
+library(dplyr)
+library(purrr)
+library(jsonify)
+library(ggplot2)
+
+
+message("Reading CHR data")
+url2<- "https://raw.githubusercontent.com/andersen-hecon/empirical_health_econ/main/Datasets/chr_county_metrics_2024.csv"
+df <- readr::read_csv(url2)
+
+message("Reading counties")
+counties<-
+  sf::read_sf("https://raw.githubusercontent.com/andersen-hecon/empirical_health_econ/main/Datasets/geojson-counties-fips.json")
+
+measures=unique(df$measure)
+
+message("Merging counties")
+
+counties_df<-
+  counties|>
+  inner_join(tidyr::pivot_wider(df,names_from = measure),by=join_by(id==fips_code))
+
+message("Starting")
+
+ui <- fluidPage(
+  titlePanel("Self-rated health by age and education"),
+  # Sidebar layout with input and output definitions ----
+  sidebarLayout(
+    
+    # Sidebar panel for inputs ----
+    sidebarPanel(
+      selectInput(
+        "measure",
+        "What measure do you want to see?",
+        measures
+      )
+
+    ),
+    
+    # Main panel for displaying outputs ----
+    mainPanel(
+      # 
+      # # Output: Histogram ----
+      # ,
+      # tabsetPanel(
+      #            tabPanel("Distribution of health",plotOutput(outputId = "distPlot")),
+      #            tabPanel("Mean health by age",plotOutput(outputId = "meanPlot")),
+      #            tabPanel("Mean health by age and education",plotOutput(outputId = "mean_by_EdPlot")),
+      #            tabPanel("Table",tableOutput(outputId = "table"))
+      # )
+      plotOutput(outputId = "map")
+      
+       
+    )
+  )
+)
+
+# Define server logic required to draw a histogram ----
+server <- function(input, output) {
+  output$map <- renderPlot({
+
+    ggplot(counties_df,
+           aes(fill=input$measure
+           )
+           )+
+      geom_col()+
+      guides(fill=guide_legend(title=element_blank(),position = "bottom"))
+    # +
+    #   xlab("Age")+ylab("Proportion")+
+    #   scale_y_continuous(limits=c(0,NA))
+    
+  })
+  
+  # output$meanPlot <- renderPlot({
+  #   
+  #   d<-gh_data
+  #   
+  #   if(paste(input$educa,collapse=", ") != "") {
+  #     d<-
+  #       d|>filter(educa %in% input$educa)
+  #   }
+  #   
+  #   d<-
+  #     d|>
+  #     mutate(
+  #       g=genhealth_num<=
+  #         which(input$health_cut==gh_levels)
+  #     )|>
+  #     summarize(n=sum(n),.by=c(g,`_ageg5yr`))|>
+  #     mutate(p=prop.table(n),.by=`_ageg5yr`)|>
+  #     filter(g)
+  # 
+  #   ggplot(d,
+  #          aes(x=factor(`_ageg5yr`,levels=age5yr),y=p, group=g
+  #              )
+  #          )+
+  #     geom_point()+
+  #     geom_line()+
+  #     xlab("Age")+ylab("Proportion")+
+  #     scale_y_continuous(limits=c(0,NA))
+  #   
+  # })
+  # 
+  # output$mean_by_EdPlot <- renderPlot({
+  #   
+  #   d<-gh_data
+  #   
+  #   if(paste(input$educa,collapse=", ") != "") {
+  #     d<-
+  #       d|>filter(educa %in% input$educa)
+  #   }
+  #   
+  #   d<-
+  #     d|>
+  #     mutate(
+  #       g=genhealth_num<=
+  #         which(input$health_cut==gh_levels)
+  #     )|>
+  #     summarize(n=sum(n),.by=c(g,`_ageg5yr`,educa))|>
+  #     mutate(p=prop.table(n),.by=`_ageg5yr`,educa)|>
+  #     filter(g)
+  # 
+  #   ggplot(d,
+  #          aes(x=factor(`_ageg5yr`,levels=age5yr),y=p, color=factor(educa,levels=educa_levels), group=factor(educa,levels=educa_levels)
+  #              )
+  #          )+
+  #     geom_point()+
+  #     geom_line()+
+  #     guides(color=guide_legend(title=element_blank(),position = "bottom"))+
+  #     xlab("Age")+ylab("Proportion")+
+  #     scale_y_continuous(limits=c(0,NA))
+  #   
+  # })
+  # 
+  # output$table=renderTable({
+  #   d<-gh_data
+  #   
+  #   if(paste(input$educa,collapse=", ") != "") {
+  #     d<-
+  #       d|>filter(educa %in% input$educa)
+  #   }
+  #   
+  #   d<-
+  #     d|>
+  #     summarize(n=sum(n),.by=c(genhlth,`_ageg5yr`))|>
+  #     mutate(p=prop.table(n),.by=`_ageg5yr`)|>
+  #     select(name=genhlth,`_ageg5yr`,value=p)|>
+  #     tidyr::pivot_wider()|>
+  #     select(
+  #       Age=`_ageg5yr`,
+  #       any_of(gh_levels)
+  #     )
+  #   
+  #   return(d)
+  #     
+  # }
+  # )
+  # 
+  # output$selected_vars<-renderText((
+  #   paste(input$educa,collapse=", ")
+  # ))
+}
+
+# Create Shiny app ----
+shinyApp(ui = ui, server = server)
+
+
+```

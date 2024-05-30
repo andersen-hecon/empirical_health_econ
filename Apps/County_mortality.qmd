@@ -1,0 +1,46 @@
+---
+title: "County mortality"
+format: html
+editor: visual
+---
+
+```{r, echo=FALSE, message=FALSE}
+#|echo: false
+library(plotly,quietly = T)
+library(rjson,quietly = T)
+
+url <- 'https://raw.githubusercontent.com/andersen-hecon/empirical_health_econ/main/Datasets/geojson-counties-fips.json'
+counties <- rjson::fromJSON(file=url)
+url2<- "https://raw.githubusercontent.com/andersen-hecon/empirical_health_econ/main/Datasets/CDC-county-mortality.csv"
+df <- read.csv(url2, colClasses=c(fips="character"))
+g <- list(
+  scope = 'usa',
+  projection = list(type = 'albers usa'),
+  showlakes = TRUE,
+  lakecolor = toRGB('white')
+)
+fig <- plot_ly()
+fig <- fig %>% add_trace(
+    type="choropleth",
+    geojson=counties,
+    locations=df$fips,
+    z=df$age_adjusted,
+    colorscale="Viridis",
+    zmin=300,
+    zmax=1600,
+    marker=list(line=list(
+      width=0)
+    )
+  )
+fig <- fig %>% colorbar(title = "Age Adjusted Mortality Rate")
+fig <- fig %>% layout(
+    title = "Age-Adjusted County Mortality from 1999 to 2020"
+)
+
+fig <- fig %>% layout(
+    geo = g
+  )
+
+fig
+
+```
