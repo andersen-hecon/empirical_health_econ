@@ -28,6 +28,7 @@ jobs:
             any::downlit
             any::xml2
             any::tidyverse
+            any::shinylive
       
       - name: Install Quarto Extensions
         run: quarto add --no-prompt quarto-ext/shinylive
