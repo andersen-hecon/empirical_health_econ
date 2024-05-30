@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://andersen-hecon.github.io/empirical_health_econ/working/test.html</loc>
-    <lastmod>2024-05-29T16:59:36.343Z</lastmod>
+    <loc>https://andersen-hecon.github.io/empirical_health_econ/Apps.html</loc>
+    <lastmod>2024-05-30T02:43:40.766Z</lastmod>
   </url>
   <url>
-    <loc>https://andersen-hecon.github.io/empirical_health_econ/Apps/Health_Education_Age.html</loc>
-    <lastmod>2024-05-29T18:27:12.161Z</lastmod>
+    <loc>https://andersen-hecon.github.io/empirical_health_econ/index.html</loc>
+    <lastmod>2024-05-30T02:43:42.009Z</lastmod>
   </url>
   <url>
-    <loc>https://andersen-hecon.github.io/empirical_health_econ/Apps/County_mortality.html</loc>
-    <lastmod>2024-05-29T18:21:51.577Z</lastmod>
-  </url>
-  <url>
-    <loc>https://andersen-hecon.github.io/empirical_health_econ/Slides/introduction.html</loc>
-    <lastmod>2024-05-24T21:33:19.471Z</lastmod>
+    <loc>https://andersen-hecon.github.io/empirical_health_econ/modules.html</loc>
+    <lastmod>2024-05-30T02:43:43.207Z</lastmod>
   </url>
 </urlset>
