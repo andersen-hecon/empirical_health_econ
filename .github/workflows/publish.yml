@@ -33,6 +33,7 @@ jobs:
             any::shinylive
             any::plotly
             any::rjson
+            any::readr
       
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
