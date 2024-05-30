@@ -72,7 +72,7 @@ library(plotly)
 library(dplyr)
 
 # Assuming you have life expectancy data as a CSV file
-data <- read.csv("C:/Users/msander4/Downloads/life-expectancy.csv")
+data <- read.csv("../Datasets/life-expectancy.csv")
 ```
 
 
