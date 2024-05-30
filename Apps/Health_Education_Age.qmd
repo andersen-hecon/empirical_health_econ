@@ -10,17 +10,291 @@ filters:
   - shinylive
 ---
 
+```{r read-data, include=FALSE}
+gh_data<-readr::read_csv("../Datasets/brfss_gh_age.csv")
+```
+
 ```{shinylive-r}
 #| standalone: true
 #| viewerHeight: 600
 library(shiny)
 library(dplyr)
 library(purrr)
-library(jsonify)
 library(ggplot2)
+library(base64enc)
 
+message("loading data")
 # load the data
-gh_data<-readr::read_csv("https://raw.githubusercontent.com/andersen-hecon/empirical_health_econ/main/Datasets/brfss_gh_age.csv")
+
+q<-"genhlth,educa,_ageg5yr,n
+Excellent,Less than high school,18-24,626906.3535193
+Excellent,Less than high school,25-29,348638.83085802
+Excellent,Less than high school,30-34,537688.2581685
+Excellent,Less than high school,35-39,367855.1790373
+Excellent,Less than high school,40-44,329972.454329
+Excellent,Less than high school,45-49,242676.8060129
+Excellent,Less than high school,50-54,274193.87081149
+Excellent,Less than high school,55-59,172212.4085737
+Excellent,Less than high school,60-64,142467.8360681
+Excellent,Less than high school,65-69,171583.7277149
+Excellent,Less than high school,70-74,163284.7422611
+Excellent,Less than high school,75-79,126348.4218134
+Excellent,Less than high school,80+,103991.5452778
+Excellent,High school or GED,18-24,3079626.63852398
+Excellent,High school or GED,25-29,1121402.9412469
+Excellent,High school or GED,30-34,1047963.02432349
+Excellent,High school or GED,35-39,762239.95525573
+Excellent,High school or GED,40-44,708478.72322758
+Excellent,High school or GED,45-49,603964.09198675
+Excellent,High school or GED,50-54,755173.1264039
+Excellent,High school or GED,55-59,631777.81787803
+Excellent,High school or GED,60-64,573674.65556247
+Excellent,High school or GED,65-69,414631.94924336
+Excellent,High school or GED,70-74,305765.89503397
+Excellent,High school or GED,75-79,297931.97236172
+Excellent,High school or GED,80+,318304.31031981
+Excellent,Some college,18-24,2753129.03172916
+Excellent,Some college,25-29,1441434.3155835
+Excellent,Some college,30-34,1457079.12935158
+Excellent,Some college,35-39,1010459.23550897
+Excellent,Some college,40-44,999345.68641605
+Excellent,Some college,45-49,812812.50385928
+Excellent,Some college,50-54,979009.66868947
+Excellent,Some college,55-59,881744.9432892
+Excellent,Some college,60-64,911373.1129638
+Excellent,Some college,65-69,634252.82635472
+Excellent,Some college,70-74,521159.97022494
+Excellent,Some college,75-79,349791.76051669
+Excellent,Some college,80+,333872.70131761
+Excellent,College or more,18-24,1048586.06444222
+Excellent,College or more,25-29,1789510.1380988
+Excellent,College or more,30-34,2128594.83867626
+Excellent,College or more,35-39,1871998.02800058
+Excellent,College or more,40-44,1871269.98046707
+Excellent,College or more,45-49,1656680.66739794
+Excellent,College or more,50-54,1726134.93427975
+Excellent,College or more,55-59,1416078.32365221
+Excellent,College or more,60-64,1417363.67247879
+Excellent,College or more,65-69,1032483.67363614
+Excellent,College or more,70-74,767875.8655606899
+Excellent,College or more,75-79,414752.14231902
+Excellent,College or more,80+,334511.5085312
+Very Good,Less than high school,18-24,930298.0094618
+Very Good,Less than high school,25-29,502915.20564495
+Very Good,Less than high school,30-34,490449.967884
+Very Good,Less than high school,35-39,470285.791895
+Very Good,Less than high school,40-44,395876.3353614
+Very Good,Less than high school,45-49,252704.61579879
+Very Good,Less than high school,50-54,363975.3723036
+Very Good,Less than high school,55-59,268018.36449464
+Very Good,Less than high school,60-64,283746.65498479997
+Very Good,Less than high school,65-69,212862.6424661
+Very Good,Less than high school,70-74,310824.7503268
+Very Good,Less than high school,75-79,263584.4144909
+Very Good,Less than high school,80+,366685.97981447
+Very Good,High school or GED,18-24,4387367.51255771
+Very Good,High school or GED,25-29,1746594.14028442
+Very Good,High school or GED,30-34,1604917.75241856
+Very Good,High school or GED,35-39,1192933.55682856
+Very Good,High school or GED,40-44,1329997.9624748
+Very Good,High school or GED,45-49,1111275.94694452
+Very Good,High school or GED,50-54,1493747.15527727
+Very Good,High school or GED,55-59,1581448.46603283
+Very Good,High school or GED,60-64,1592698.25246926
+Very Good,High school or GED,65-69,1111619.79311027
+Very Good,High school or GED,70-74,975504.79962113
+Very Good,High school or GED,75-79,772256.65969597
+Very Good,High school or GED,80+,979785.58440316
+Very Good,Some college,18-24,4549223.1334545
+Very Good,Some college,25-29,2529250.21308928
+Very Good,Some college,30-34,2496367.7020821
+Very Good,Some college,35-39,1945936.323397
+Very Good,Some college,40-44,1854397.4240635799
+Very Good,Some college,45-49,1580404.98871344
+Very Good,Some college,50-54,1998147.52573699
+Very Good,Some college,55-59,1903805.35717633
+Very Good,Some college,60-64,2217329.40472535
+Very Good,Some college,65-69,1752934.57793762
+Very Good,Some college,70-74,1474592.8920833
+Very Good,Some college,75-79,920641.32267454
+Very Good,Some college,80+,971457.86814491
+Very Good,College or more,18-24,1556700.62979756
+Very Good,College or more,25-29,2739540.47199855
+Very Good,College or more,30-34,3238533.28840351
+Very Good,College or more,35-39,2771499.13551398
+Very Good,College or more,40-44,2951603.5735133
+Very Good,College or more,45-49,2535704.76761866
+Very Good,College or more,50-54,2603296.98099695
+Very Good,College or more,55-59,2230943.20461492
+Very Good,College or more,60-64,2334483.56223225
+Very Good,College or more,65-69,2000853.98639953
+Very Good,College or more,70-74,1583803.33153906
+Very Good,College or more,75-79,848738.80686892
+Very Good,College or more,80+,755918.08734202
+Good,Less than high school,18-24,1181527.0679576
+Good,Less than high school,25-29,760355.13638796
+Good,Less than high school,30-34,1359250.0192018
+Good,Less than high school,35-39,1302883.26969384
+Good,Less than high school,40-44,1121996.9544672
+Good,Less than high school,45-49,902917.70581637
+Good,Less than high school,50-54,947281.6833575
+Good,Less than high school,55-59,813377.04298947
+Good,Less than high school,60-64,722367.89117474
+Good,Less than high school,65-69,579743.56326337
+Good,Less than high school,70-74,600110.8142831
+Good,Less than high school,75-79,538783.16714711
+Good,Less than high school,80+,664962.67114779
+Good,High school or GED,18-24,3989362.68852926
+Good,High school or GED,25-29,2005053.97407794
+Good,High school or GED,30-34,2312935.15752129
+Good,High school or GED,35-39,1657485.73126413
+Good,High school or GED,40-44,1740832.5207279
+Good,High school or GED,45-49,1687127.1229375901
+Good,High school or GED,50-54,2074779.6684426
+Good,High school or GED,55-59,1981121.18111777
+Good,High school or GED,60-64,2018544.19216475
+Good,High school or GED,65-69,1658327.93942317
+Good,High school or GED,70-74,1429640.17823642
+Good,High school or GED,75-79,1137583.759508
+Good,High school or GED,80+,1472543.49960103
+Good,Some college,18-24,3493647.67252148
+Good,Some college,25-29,2027610.73399509
+Good,Some college,30-34,2130832.09153504
+Good,Some college,35-39,2067210.73921216
+Good,Some college,40-44,2161620.26197723
+Good,Some college,45-49,1754701.12118264
+Good,Some college,50-54,2178436.66620753
+Good,Some college,55-59,2023879.85603969
+Good,Some college,60-64,2376192.1560004
+Good,Some college,65-69,1775315.41838597
+Good,Some college,70-74,1588317.28214028
+Good,Some college,75-79,1002474.59143352
+Good,Some college,80+,1154864.66224168
+Good,College or more,18-24,908399.8474899
+Good,College or more,25-29,1614053.12244012
+Good,College or more,30-34,2030138.57927513
+Good,College or more,35-39,1827365.58555993
+Good,College or more,40-44,1857052.40861793
+Good,College or more,45-49,1603046.86746943
+Good,College or more,50-54,1690853.52414734
+Good,College or more,55-59,1548506.17780212
+Good,College or more,60-64,1678175.755737
+Good,College or more,65-69,1380481.39130916
+Good,College or more,70-74,1190491.91962677
+Good,College or more,75-79,727867.68740742
+Good,College or more,80+,840283.98363743
+Fair,Less than high school,18-24,525878.7038542
+Fair,Less than high school,25-29,411795.9054954
+Fair,Less than high school,30-34,600666.2911299
+Fair,Less than high school,35-39,750838.314772
+Fair,Less than high school,40-44,739759.8788861
+Fair,Less than high school,45-49,692933.16802812
+Fair,Less than high school,50-54,1083146.2432315
+Fair,Less than high school,55-59,995897.40808349
+Fair,Less than high school,60-64,901717.93788684
+Fair,Less than high school,65-69,783014.48241042
+Fair,Less than high school,70-74,652108.07876294
+Fair,Less than high school,75-79,521628.92145567
+Fair,Less than high school,80+,654260.78757112
+Fair,High school or GED,18-24,1234540.8027994
+Fair,High school or GED,25-29,652228.43805534
+Fair,High school or GED,30-34,701934.245514
+Fair,High school or GED,35-39,697404.10907533
+Fair,High school or GED,40-44,777370.61444182
+Fair,High school or GED,45-49,644567.24340157
+Fair,High school or GED,50-54,1076595.68323912
+Fair,High school or GED,55-59,1076824.0626168
+Fair,High school or GED,60-64,1243701.44416847
+Fair,High school or GED,65-69,943065.82636818
+Fair,High school or GED,70-74,715507.26230933
+Fair,High school or GED,75-79,596046.45345764
+Fair,High school or GED,80+,775384.47402485
+Fair,Some college,18-24,888840.4012455
+Fair,Some college,25-29,589551.31593202
+Fair,Some college,30-34,760035.19659
+Fair,Some college,35-39,617897.95561003
+Fair,Some college,40-44,751999.0893266799
+Fair,Some college,45-49,647088.14792461
+Fair,Some college,50-54,884025.53847017
+Fair,Some college,55-59,977737.39343659
+Fair,Some college,60-64,1025534.44793235
+Fair,Some college,65-69,888752.7919364
+Fair,Some college,70-74,730307.18936881
+Fair,Some college,75-79,444461.37930707
+Fair,Some college,80+,530544.76270962
+Fair,College or more,18-24,162930.96017673
+Fair,College or more,25-29,289391.43723152
+Fair,College or more,30-34,344818.8091467
+Fair,College or more,35-39,276627.32271522
+Fair,College or more,40-44,404751.62369488
+Fair,College or more,45-49,364221.59599932
+Fair,College or more,50-54,454909.18642575
+Fair,College or more,55-59,445544.96937582
+Fair,College or more,60-64,520738.78924393
+Fair,College or more,65-69,437120.61376733
+Fair,College or more,70-74,405200.40023127
+Fair,College or more,75-79,290473.98726059
+Fair,College or more,80+,300766.00659284
+Poor,Less than high school,18-24,90224.2228515
+Poor,Less than high school,25-29,82367.8434709
+Poor,Less than high school,30-34,162556.4106895
+Poor,Less than high school,35-39,135233.1325551
+Poor,Less than high school,40-44,161860.0523023
+Poor,Less than high school,45-49,276511.6524191
+Poor,Less than high school,50-54,530442.49244954
+Poor,Less than high school,55-59,501365.27033413
+Poor,Less than high school,60-64,618112.08733188
+Poor,Less than high school,65-69,375980.3129007
+Poor,Less than high school,70-74,344707.49418914
+Poor,Less than high school,75-79,276217.4185251
+Poor,Less than high school,80+,381447.52372037
+Poor,High school or GED,18-24,192864.8193576
+Poor,High school or GED,25-29,119158.2644822
+Poor,High school or GED,30-34,159626.6958844
+Poor,High school or GED,35-39,151706.671782
+Poor,High school or GED,40-44,245482.05746345
+Poor,High school or GED,45-49,225192.41165644
+Poor,High school or GED,50-54,418334.15251834
+Poor,High school or GED,55-59,525611.50355199
+Poor,High school or GED,60-64,562646.57928074
+Poor,High school or GED,65-69,310682.71724379
+Poor,High school or GED,70-74,299558.6247177
+Poor,High school or GED,75-79,218891.4368703
+Poor,High school or GED,80+,357842.71854573
+Poor,Some college,18-24,108749.6748313
+Poor,Some college,25-29,98793.8973027
+Poor,Some college,30-34,151741.6524254
+Poor,Some college,35-39,167246.74131519
+Poor,Some college,40-44,212028.68503057
+Poor,Some college,45-49,219647.9582759
+Poor,Some college,50-54,342765.31293298
+Poor,Some college,55-59,373317.81332176
+Poor,Some college,60-64,487694.70908137
+Poor,Some college,65-69,306720.69650009
+Poor,Some college,70-74,255509.76236244
+Poor,Some college,75-79,215144.10772919
+Poor,Some college,80+,264465.60449186
+Poor,College or more,18-24,26154.254743
+Poor,College or more,25-29,37326.44403317
+Poor,College or more,30-34,43273.900012
+Poor,College or more,35-39,63914.2253011
+Poor,College or more,40-44,76770.02992414
+Poor,College or more,45-49,96056.92212297
+Poor,College or more,50-54,119121.56729014
+Poor,College or more,55-59,113478.07119377
+Poor,College or more,60-64,164763.23280872
+Poor,College or more,65-69,132460.91961925
+Poor,College or more,70-74,116313.84747983
+Poor,College or more,75-79,77226.30124086
+Poor,College or more,80+,116564.26341892"
+
+
+gh_data=readr::read_csv(q)
+
+
+message("decoded data")
+
+
 
 gh_levels<-c("Excellent",
              "Very Good",
