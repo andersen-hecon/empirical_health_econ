@@ -27,10 +27,12 @@ jobs:
             any::rmarkdown
             any::downlit
             any::xml2
-            any::tidyverse
+            any::dplyr
+            any::purrr
+            any::ggplot2
             any::shinylive
             any::plotly
-            any:;rjson
+            any::rjson
       
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
