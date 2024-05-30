@@ -30,9 +30,8 @@ jobs:
             any::tidyverse
             any::shinylive
             any::plotly
+            any:;rjson
       
-      - name: Install Quarto Extensions
-        run: quarto add --no-prompt quarto-ext/shinylive
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
         with:
