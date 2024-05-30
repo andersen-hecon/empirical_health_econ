@@ -28,7 +28,9 @@ jobs:
             any::downlit
             any::xml2
             any::tidyverse
-            
+      
+      - name: Install Quarto Extensions
+        run: quarto add quarto-ext/shinylive
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
         with:
