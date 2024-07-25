@@ -369,7 +369,7 @@ ui <- fluidPage(
       # 
       # # Output: Histogram ----
       # ,
-      textOutput("selected_vars"),
+      # textOutput("selected_vars"),
      
       tabsetPanel(
                  tabPanel("Distribution of health",plotOutput(outputId = "distPlot")),
