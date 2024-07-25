@@ -37,9 +37,9 @@ fig <- fig %>% layout(
     title = "Age-Adjusted County Mortality from 1999 to 2020"
 )
 
-fig <- fig %>% layout(
-    geo = g
-  )
+# fig <- fig %>% layout(
+#     geo = g
+#   )
 
 fig
 
